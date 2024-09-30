@@ -1,0 +1,28 @@
+# Copyright (c) HashiCorp, Inc.
+# SPDX-License-Identifier: MPL-2.0
+
+# --- Common --- #
+friendly_name_prefix   = "<acme-hcp>" #This should be unique across all deployments
+location               = <"eastus>"
+resource_group_name    = "<boundary-worker-hcp-rg>"
+common_tags = {
+  App         = "<boundary-worker-hcp>"
+  Environment = "<test>"
+  Owner       = "<YourName>"
+  WorkerType = "<egress>"
+}
+
+# ---Boundary configuration settings --- #
+boundary_version         = "<0.17.1+ent>"
+hcp_boundary_cluster_id  = "<id>"
+worker_tags              = {<>}
+
+# --- Networking --- #
+worker_subnet_id           = "<worker-subnet-id>"
+worker_is_internal         = <true>
+
+# --- Compute --- #
+vmss_vm_count              = <1>
+vm_ssh_public_key          = "<iamafaketsshpublickey>"
+vm_enable_boot_diagnostics = <true>
+
