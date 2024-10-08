@@ -1,0 +1,32 @@
+# Copyright (c) HashiCorp, Inc.
+# SPDX-License-Identifier: MPL-2.0
+
+# --- Common --- #
+friendly_name_prefix   = "<acme-egress>" #This should be unique across all deployments
+location               = <"eastus>"
+resource_group_name    = "<boundary-worker-egress-rg>"
+common_tags = {
+  App         = "<boundary-worker-egress>"
+  Environment = "<test>"
+  Owner       = "<YourName>"
+  WorkerType = "<egress>"
+}
+
+# ---Boundary configuration settings --- #
+boundary_version         = "<0.17.1+ent>"
+boundary_upstream        = ["<10.0.2.4>"] #The IP of the upstream Boundary Controller Worker Proxy LB
+boundary_upstream_port   = <9202> #Typically 9201 if upstream is Boundary Controller, 9202 if upstream is Worker
+worker_tags              = {<>}
+
+# --- Networking --- #
+worker_subnet_id           = "<worker-subnet-id>"
+worker_is_internal         = <true>
+
+# --- Key Vault --- #
+worker_keyvault_rg_name  = "<boundary-controller-rg>"
+worker_keyvault_name     = "<boundary-worker>"
+
+# --- Compute --- #
+vmss_vm_count              = <1>
+vm_ssh_public_key          = "<iamafaketsshpublickey>"
+vm_enable_boot_diagnostics = <true>
