@@ -43,7 +43,7 @@ Unless deploying a Boundary HCP Worker, you will require a Boundary Enterprise C
 1. Create/configure/validate the applicable [prerequisites](#prerequisites).
 
 1. Referencing the [examples](./examples/) directory, copy the Terraform files from your scenario of choice into an appropriate destination to create your own root Terraform configuration. Populate your own custom values in the __example terraform.tfvars__ provided within the subdirectory of your scenario of choice (example [here](./examples/main/terraform.tfvars.example)) file and remove the `.example` file extension.
-  
+
     >📝 Note: The `friendly_name_prefix` variable should be unique for every agent deployment.
 
 1. Update the __backend.tf__ file within your newly created Terraform root configuration with your [AzureRM remote state backend](https://www.terraform.io/docs/language/settings/backends/azurerm.html) configuration values.
@@ -54,7 +54,7 @@ Unless deploying a Boundary HCP Worker, you will require a Boundary Enterprise C
 
    ```sh
    tail -f /var/log/boundary-cloud-init.log
-   
+
    journalctl -xu cloud-final -f
    ```
 
@@ -73,7 +73,7 @@ Unless deploying a Boundary HCP Worker, you will require a Boundary Enterprise C
 1. Create/configure/validate the applicable [prerequisites](#prerequisites).
 
 1. Referencing the [examples](./examples/) directory, copy the Terraform files from your scenario of choice into an appropriate destination to create your own root Terraform configuration. Populate your own custom values in the __example terraform.tfvars__ provided within the subdirectory of your scenario of choice (example [here](./examples/main/terraform.tfvars.example)) file and remove the `.example` file extension. Set the `hcp_boundary_cluster_id` variable with the Boundary Cluster ID from step 1.
-  
+
     >📝 Note: The `friendly_name_prefix` variable should be unique for every agent deployment.
 
 1. Update the __backend.tf__ file within your newly created Terraform root configuration with your [AzureRM remote state backend](https://www.terraform.io/docs/language/settings/backends/azurerm.html) configuration values.
@@ -84,7 +84,7 @@ Unless deploying a Boundary HCP Worker, you will require a Boundary Enterprise C
 
    ```sh
    tail -f /var/log/boundary-cloud-init.log
-   
+
    journalctl -xu cloud-final -f
    ```
 
@@ -109,7 +109,6 @@ Below are links to docs pages related to deployment customizations and day 2 ope
 - [Updating/modifying Boundary configuration settings](https://github.com/hashicorp/terraform-azurerm-boundary-enterprise-worker-hvd/blob/main/docs/boundary-config-settings.md)
 - [Deploying in Azure GovCloud](./docs/govcloud-deployment.md)
 
-<!-- BEGIN_TF_DOCS -->
 ## Module support
 
 This open source software is maintained by the HashiCorp Technical Field Organization, independently of our enterprise products. While our Support Engineering team provides dedicated support for our enterprise offerings, this open source software is not included.
@@ -119,6 +118,7 @@ This open source software is maintained by the HashiCorp Technical Field Organiz
 
 Please note that there is no official Service Level Agreement (SLA) for support of this software as a HashiCorp customer. This software falls under the definition of Community Software/Versions in your Agreement. We appreciate your understanding and collaboration in improving our open source projects.
 
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -155,6 +155,9 @@ Please note that there is no official Service Level Agreement (SLA) for support 
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_friendly_name_prefix"></a> [friendly\_name\_prefix](#input\_friendly\_name\_prefix) | Friendly name prefix for uniquely naming Azure resources. This should be unique across all deployments | `string` | n/a | yes |
+| <a name="input_location"></a> [location](#input\_location) | Azure region for this boundary deployment. | `string` | n/a | yes |
+| <a name="input_worker_subnet_id"></a> [worker\_subnet\_id](#input\_worker\_subnet\_id) | Subnet ID for worker VMs. | `string` | n/a | yes |
 | <a name="input_additional_package_names"></a> [additional\_package\_names](#input\_additional\_package\_names) | List of additional repository package names to install | `set(string)` | `[]` | no |
 | <a name="input_availability_zones"></a> [availability\_zones](#input\_availability\_zones) | List of Azure Availability Zones to spread boundary resources across. | `set(string)` | <pre>[<br/>  "1",<br/>  "2",<br/>  "3"<br/>]</pre> | no |
 | <a name="input_boundary_upstream"></a> [boundary\_upstream](#input\_boundary\_upstream) | List of IP addresses or FQDNs for the worker to initially connect to. This could be a controller or worker. This is not used when connecting to HCP Boundary. | `list(string)` | `null` | no |
@@ -163,12 +166,10 @@ Please note that there is no official Service Level Agreement (SLA) for support 
 | <a name="input_common_tags"></a> [common\_tags](#input\_common\_tags) | Map of common tags for taggable Azure resources. | `map(string)` | `{}` | no |
 | <a name="input_create_lb"></a> [create\_lb](#input\_create\_lb) | Boolean to create a Network Load Balancer for Boundary. Should be true if downstream workers will connect to these workers. | `bool` | `false` | no |
 | <a name="input_create_resource_group"></a> [create\_resource\_group](#input\_create\_resource\_group) | Boolean to create a new Resource Group for this boundary deployment. | `bool` | `true` | no |
-| <a name="input_friendly_name_prefix"></a> [friendly\_name\_prefix](#input\_friendly\_name\_prefix) | Friendly name prefix for uniquely naming Azure resources. This should be unique across all deployments | `string` | n/a | yes |
 | <a name="input_hcp_boundary_cluster_id"></a> [hcp\_boundary\_cluster\_id](#input\_hcp\_boundary\_cluster\_id) | ID of the Boundary cluster in HCP. Only used when using HCP Boundary. | `string` | `""` | no |
 | <a name="input_is_govcloud_region"></a> [is\_govcloud\_region](#input\_is\_govcloud\_region) | Boolean indicating whether this boundary deployment is in an Azure Government Cloud region. | `bool` | `false` | no |
 | <a name="input_lb_private_ip"></a> [lb\_private\_ip](#input\_lb\_private\_ip) | Private IP address for internal Azure Load Balancer. | `string` | `null` | no |
 | <a name="input_lb_subnet_id"></a> [lb\_subnet\_id](#input\_lb\_subnet\_id) | Subnet ID for worker proxy load balancer. | `string` | `null` | no |
-| <a name="input_location"></a> [location](#input\_location) | Azure region for this boundary deployment. | `string` | n/a | yes |
 | <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | Name of Resource Group to create. | `string` | `"boundary-worker-rg"` | no |
 | <a name="input_vm_admin_username"></a> [vm\_admin\_username](#input\_vm\_admin\_username) | Admin username for VMs in VMSS. | `string` | `"boundaryadmin"` | no |
 | <a name="input_vm_custom_image_name"></a> [vm\_custom\_image\_name](#input\_vm\_custom\_image\_name) | Name of custom VM image to use for VMSS. If not using a custom image, leave this blank. | `string` | `null` | no |
@@ -187,7 +188,6 @@ Please note that there is no official Service Level Agreement (SLA) for support 
 | <a name="input_worker_is_internal"></a> [worker\_is\_internal](#input\_worker\_is\_internal) | Boolean to create give the worker an internal IP address only or give it an external IP address. | `bool` | `true` | no |
 | <a name="input_worker_keyvault_name"></a> [worker\_keyvault\_name](#input\_worker\_keyvault\_name) | Name of the Key Vault that contains the worker key to use. | `string` | `""` | no |
 | <a name="input_worker_keyvault_rg_name"></a> [worker\_keyvault\_rg\_name](#input\_worker\_keyvault\_rg\_name) | Name of the Resource Group where the 'worker' Key Vault resides. | `string` | `""` | no |
-| <a name="input_worker_subnet_id"></a> [worker\_subnet\_id](#input\_worker\_subnet\_id) | Subnet ID for worker VMs. | `string` | n/a | yes |
 | <a name="input_worker_tags"></a> [worker\_tags](#input\_worker\_tags) | Map of extra tags to apply to Boundary Worker Configuration. var.common\_tags will be merged with this map. | `map(string)` | `{}` | no |
 
 ## Outputs
