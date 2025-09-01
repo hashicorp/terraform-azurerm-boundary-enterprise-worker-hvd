@@ -238,3 +238,13 @@ variable "vmss_availability_zones" {
     error_message = "Availability zone must be one of, or a combination of '1', '2', '3'."
   }
 }
+variable "custom_startup_script_template" {
+  type        = string
+  description = "Name of custom startup script template file. File must exist within a directory named `./templates` within your current working directory."
+  default     = null
+
+  validation {
+    condition     = var.custom_startup_script_template != null ? fileexists("${path.cwd}/templates/${var.custom_startup_script_template}") : true
+    error_message = "File not found. Ensure the file exists within a directory named `./templates` within your current working directory."
+  }
+}
