@@ -24,7 +24,6 @@ locals {
     boundary_dir_bin         = "/usr/bin"
     boundary_dir_config      = "/etc/boundary.d"
     boundary_dir_home        = "/opt/boundary"
-    boundary_install_url     = format("https://releases.hashicorp.com/boundary/%s/boundary_%s_linux_amd64.zip", var.boundary_version, var.boundary_version)
     worker_tags              = lower(replace(jsonencode(merge(var.common_tags, var.worker_tags)), ":", "="))
     tenant_id                = data.azurerm_client_config.current.tenant_id
     additional_package_names = join(" ", var.additional_package_names)
