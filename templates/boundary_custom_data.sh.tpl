@@ -11,6 +11,9 @@ BOUNDARY_DIR_BIN="${boundary_dir_bin}"
 BOUNDARY_USER="boundary"
 BOUNDARY_GROUP="boundary"
 BOUNDARY_INSTALL_URL="${boundary_install_url}"
+PRODUCT="boundary"
+BOUNDARY_VERSION="${boundary_version}"
+VERSION=$BOUNDARY_VERSION
 REQUIRED_PACKAGES="jq unzip"
 ADDITIONAL_PACKAGES="${additional_package_names}"
 
@@ -44,6 +47,30 @@ function detect_os_distro {
   esac
 
   echo "$OS_DISTRO_DETECTED"
+}
+
+function detect_architecture {
+  local ARCHITECTURE=""
+  local OS_ARCH_DETECTED=$(uname -m)
+
+  case "$OS_ARCH_DETECTED" in
+    "x86_64"*)
+      ARCHITECTURE="linux_amd64"
+      ;;
+    "aarch64"*)
+      ARCHITECTURE="linux_arm64"
+      ;;
+		"arm"*)
+      ARCHITECTURE="linux_arm"
+			;;
+    *)
+      log "ERROR" "Unsupported architecture detected: '$OS_ARCH_DETECTED'. "
+		  exit_script 1
+			;;
+  esac
+
+  echo "$ARCHITECTURE"
+
 }
 
 function install_prereqs {
@@ -151,7 +178,7 @@ function generate_boundary_config {
 
   cat >$BOUNDARY_CONFIG_PATH <<EOF
 worker {
-	public_addr = "$addr" 
+	public_addr = "$addr"
 
 %{ if hcp_boundary_cluster_id == "" ~}
   name = "$host"
@@ -263,8 +290,12 @@ function exit_script {
 function main {
   log "INFO" "Beginning Boundary custom_data script."
 
+  OS_ARCH=$(detect_architecture)
+  log "INFO" "Detected system architecture is '$OS_ARCH'."
+
   OS_DISTRO=$(detect_os_distro)
   log "INFO" "Detected Linux OS distro is '$OS_DISTRO'."
+
   install_prereqs "$OS_DISTRO"
   install_azcli "$OS_DISTRO"
   scrape_vm_info
