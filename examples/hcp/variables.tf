@@ -200,30 +200,40 @@ variable "vm_custom_image_rg_name" {
   description = "Resource Group name where the custom VM image resides. Only valid if `vm_custom_image_name` is not null."
   default     = null
 }
-
-variable "vm_image_publisher" {
+variable "vm_os_image" {
+  description = "The OS image to use for the VM. Options are: redhat8, redhat9, ubuntu2204, ubuntu2404."
   type        = string
-  description = "Publisher of the VM image."
-  default     = "Canonical"
+  default     = "ubuntu2404"
+
+  validation {
+    condition     = contains(["redhat8", "redhat9", "ubuntu2204", "ubuntu2404"], var.vm_os_image)
+    error_message = "Value must be one of 'redhat8', 'redhat9', 'ubuntu2204', or 'ubuntu2404'."
+  }
 }
 
-variable "vm_image_offer" {
-  type        = string
-  description = "Offer of the VM image."
-  default     = "0001-com-ubuntu-server-jammy"
-}
+# variable "vm_image_publisher" {
+#   type        = string
+#   description = "Publisher of the VM image."
+#   default     = "Canonical"
+# }
 
-variable "vm_image_sku" {
-  type        = string
-  description = "SKU of the VM image."
-  default     = "22_04-lts-gen2"
-}
+# variable "vm_image_offer" {
+#   type        = string
+#   description = "Offer of the VM image."
+#   default     = "0001-com-ubuntu-server-jammy"
+# }
 
-variable "vm_image_version" {
-  type        = string
-  description = "Version of the VM image."
-  default     = "latest"
-}
+# variable "vm_image_sku" {
+#   type        = string
+#   description = "SKU of the VM image."
+#   default     = "22_04-lts-gen2"
+# }
+
+# variable "vm_image_version" {
+#   type        = string
+#   description = "Version of the VM image."
+#   default     = "latest"
+# }
 
 variable "vm_disk_encryption_set_name" {
   type        = string
