@@ -5,6 +5,8 @@
 # Custom Data (cloud-init) arguments
 #------------------------------------------------------------------------------
 locals {
+  custom_startup_script_template = var.custom_startup_script_template != null ? "${path.cwd}/templates/${var.custom_startup_script_template}" : "${path.module}/templates/boundary_custom_data.sh.tpl"
+
   custom_data_args = {
     # used to set azure-cli context to AzureUSGovernment
     is_govcloud_region = var.is_govcloud_region
@@ -22,7 +24,6 @@ locals {
     boundary_dir_bin         = "/usr/bin"
     boundary_dir_config      = "/etc/boundary.d"
     boundary_dir_home        = "/opt/boundary"
-    boundary_install_url     = format("https://releases.hashicorp.com/boundary/%s/boundary_%s_linux_amd64.zip", var.boundary_version, var.boundary_version)
     worker_tags              = lower(replace(jsonencode(merge(var.common_tags, var.worker_tags)), ":", "="))
     tenant_id                = data.azurerm_client_config.current.tenant_id
     additional_package_names = join(" ", var.additional_package_names)
@@ -32,15 +33,6 @@ locals {
   }
 }
 
-#------------------------------------------------------------------------------
-# Custom VM image lookup
-#------------------------------------------------------------------------------
-data "azurerm_image" "custom" {
-  count = var.vm_custom_image_name == null ? 0 : 1
-
-  name                = var.vm_custom_image_name
-  resource_group_name = var.vm_custom_image_rg_name
-}
 
 #------------------------------------------------------------------------------
 # Virtual Machine Scale Set (VMSS)
@@ -57,8 +49,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "boundary" {
   zone_balance        = true
   zones               = var.vmss_availability_zones
   health_probe_id     = var.create_lb == false ? null : azurerm_lb_probe.boundary_proxy[0].id
-  custom_data         = base64encode(templatefile("${path.module}/templates/boundary_custom_data.sh.tpl", local.custom_data_args))
-
+  custom_data         = base64encode(templatefile("${local.custom_startup_script_template}", local.custom_data_args))
   scale_in {
     rule = "OldestVM"
   }
@@ -83,10 +74,10 @@ resource "azurerm_linux_virtual_machine_scale_set" "boundary" {
     for_each = var.vm_custom_image_name == null ? [true] : []
 
     content {
-      publisher = var.vm_image_publisher
-      offer     = var.vm_image_offer
-      sku       = var.vm_image_sku
-      version   = var.vm_image_version
+      publisher = local.vm_image_publisher
+      offer     = local.vm_image_offer
+      sku       = local.vm_image_sku
+      version   = data.azurerm_platform_image.latest_os_image.version
     }
   }
 
