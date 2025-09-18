@@ -42,7 +42,7 @@ Unless deploying a Boundary HCP Worker, you will require a Boundary Enterprise C
 
 1. Create/configure/validate the applicable [prerequisites](#prerequisites).
 
-1. Referencing the [examples](./examples/) directory, copy the Terraform files from your scenario of choice into an appropriate destination to create your own root Terraform configuration. Populate your own custom values in the __example terraform.tfvars__ provided within the subdirectory of your scenario of choice (example [here](./examples/main/terraform.tfvars.example)) file and remove the `.example` file extension.
+1. Referencing the [examples](https://github.com/hashicorp/terraform-azurerm-boundary-enterprise-worker-hvd/blob/0.2.0/examples/) directory, copy the Terraform files from your scenario of choice into an appropriate destination to create your own root Terraform configuration. Populate your own custom values in the __example terraform.tfvars__ provided within the subdirectory of your scenario of choice (example [here](https://github.com/hashicorp/terraform-azurerm-boundary-enterprise-worker-hvd/blob/0.2.0/examples/main/terraform.tfvars.example)) file and remove the `.example` file extension.
 
     >📝 Note: The `friendly_name_prefix` variable should be unique for every agent deployment.
 
@@ -72,7 +72,7 @@ Unless deploying a Boundary HCP Worker, you will require a Boundary Enterprise C
 
 1. Create/configure/validate the applicable [prerequisites](#prerequisites).
 
-1. Referencing the [examples](./examples/) directory, copy the Terraform files from your scenario of choice into an appropriate destination to create your own root Terraform configuration. Populate your own custom values in the __example terraform.tfvars__ provided within the subdirectory of your scenario of choice (example [here](./examples/main/terraform.tfvars.example)) file and remove the `.example` file extension. Set the `hcp_boundary_cluster_id` variable with the Boundary Cluster ID from step 1.
+1. Referencing the [examples](https://github.com/hashicorp/terraform-azurerm-boundary-enterprise-worker-hvd/blob/0.2.0/examples/) directory, copy the Terraform files from your scenario of choice into an appropriate destination to create your own root Terraform configuration. Populate your own custom values in the __example terraform.tfvars__ provided within the subdirectory of your scenario of choice (example [here](https://github.com/hashicorp/terraform-azurerm-boundary-enterprise-worker-hvd/blob/0.2.0/examples/main/terraform.tfvars.example)) file and remove the `.example` file extension. Set the `hcp_boundary_cluster_id` variable with the Boundary Cluster ID from step 1.
 
     >📝 Note: The `friendly_name_prefix` variable should be unique for every agent deployment.
 
@@ -107,7 +107,7 @@ Below are links to docs pages related to deployment customizations and day 2 ope
 - [Deployment Customizations](https://github.com/hashicorp/terraform-azurerm-boundary-enterprise-worker-hvd/blob/main/docs/deployment-customizations.md)
 - [Upgrading Boundary version](https://github.com/hashicorp/terraform-azurerm-boundary-enterprise-worker-hvd/blob/main/docs/boundary-version-upgrades.md)
 - [Updating/modifying Boundary configuration settings](https://github.com/hashicorp/terraform-azurerm-boundary-enterprise-worker-hvd/blob/main/docs/boundary-config-settings.md)
-- [Deploying in Azure GovCloud](./docs/govcloud-deployment.md)
+- [Deploying in Azure GovCloud](https://github.com/hashicorp/terraform-azurerm-boundary-enterprise-worker-hvd/blob/0.2.0/docs/govcloud-deployment.md)
 
 ## Module support
 
