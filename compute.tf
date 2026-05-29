@@ -30,6 +30,8 @@ locals {
 
     # key_vault settings
     key_vault_name = var.worker_keyvault_name != "" && var.worker_keyvault_rg_name != "" ? data.azurerm_key_vault.worker[0].name : ""
+
+    boundary_bootstrap_azure_client_id = azurerm_user_assigned_identity.boundary.client_id
   }
 }
 
